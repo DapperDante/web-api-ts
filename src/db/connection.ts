@@ -7,6 +7,7 @@ const database = new Sequelize(
   dbEnv.DB_PASSWORD,
   {
     host: dbEnv.DB_HOST,
+    port: dbEnv.DB_PORT,
     dialect: dbEnv.DB_DIALECT,
     logging: appEnv.NODE_ENV === "development" ? console.log : false
   }
