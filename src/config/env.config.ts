@@ -4,9 +4,16 @@ dotenv.config();
 const appEnv = {
 	PORT: process.env.PORT,
 	NODE_ENV: process.env.NODE_ENV,
+	PRODUCTION: process.env.NODE_ENV === "production",
 	CORS_ORIGINS: process.env.CORS_ORIGINS ? process.env.CORS_ORIGINS.split(',') : '*',
 	JWT_SECRET: process.env.JWT_SECRET!,
-	BCRYPT_SALT_ROUNDS: Number(process.env.BCRYPT_SALT_ROUNDS)
+	BCRYPT_SALT_ROUNDS: Number(process.env.BCRYPT_SALT_ROUNDS),
+	API_RATE_LIMIT: process.env.API_RATE_LIMIT ? Number(process.env.API_RATE_LIMIT) : 100,
+	API_PAYLOAD_LIMIT: process.env.API_PAYLOAD_LIMIT ? process.env.API_PAYLOAD_LIMIT : '1mb',
+	API_TIMEOUT_RESPONSE: process.env.API_TIMEOUT_RESPONSE ? Number(process.env.API_TIMEOUT_RESPONSE) : 5000,
+	API_TIMEOUT_REQUEST: process.env.API_TIMEOUT_REQUEST ? Number(process.env.API_TIMEOUT_REQUEST) : 5000,
+	API_KEEP_ALIVE_TIMEOUT: process.env.API_KEEP_ALIVE_TIMEOUT ? Number(process.env.API_KEEP_ALIVE_TIMEOUT) : 30000,
+	API_HEADERS_TIMEOUT: process.env.API_HEADERS_TIMEOUT ? Number(process.env.API_HEADERS_TIMEOUT) : 30000
 };
 
 const dbEnv = {

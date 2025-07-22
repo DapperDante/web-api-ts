@@ -1,5 +1,5 @@
 import { UniqueConstraintError, ValidationError } from "sequelize";
-import { PermissionDeniedError, InvalidationFieldsError, NotFoundError } from "../classes/error.class";
+import { PermissionDeniedError, InvalidationFieldsError, NotFoundError, SecurityError } from "../classes/error.class";
 import { RouteError } from "../interfaces/route.interface";
 
 const handlePermissionDeniedError: RouteError = (err, req, res, next) => {
@@ -7,6 +7,20 @@ const handlePermissionDeniedError: RouteError = (err, req, res, next) => {
 	if (err instanceof PermissionDeniedError) {
 		return res.status(403).json({
 			message: err.message || "Bad request: Permission denied",
+		});
+	}
+	next(err);
+};
+
+const handleSecurityError: RouteError = (err, req, res, next) => {
+	if (err instanceof SecurityError){
+		return res.status(err.statusCode).json({
+			message: err.message || "Unauthorized: Security error",
+		});
+	}
+	if(err.type === "entity.too.large") {
+		return res.status(413).json({
+			message: err.message || "Payload Too Large",
 		});
 	}
 	next(err);
@@ -53,6 +67,7 @@ const handleGenericError: RouteError = (err, req, res, next) => {
 
 export const errorHandler = [
 	handlePermissionDeniedError,
+	handleSecurityError,
 	handleInvalidationFieldsError,
 	handleUniqueConstraintError,
 	handleValidationError,

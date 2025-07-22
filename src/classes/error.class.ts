@@ -1,5 +1,5 @@
 export class ErrorFactory {
-	static createError(type: any, message: string) {
+	static createError(type: any, message: string, statusCode?: number): Error {
 		switch (type) {
 			case "InvalidationFieldsError":
 				return new InvalidationFieldsError(message);
@@ -9,6 +9,8 @@ export class ErrorFactory {
 				return new NotFoundError(message);
 			case "ViolationSystemError":
 				return new ViolationSystemError(message);
+			case "SecurityError":
+				return new SecurityError(message, statusCode!);
 			default:
 				return new Error(`Unknown error type: ${type}`);
 		}
@@ -37,5 +39,13 @@ export class ViolationSystemError extends Error {
 	constructor(message: any) {
 		super(message);
 		this.name = "ViolationSystemError";
+	}
+}
+export class SecurityError extends Error {
+	statusCode!: number;
+	constructor(message: any, statusCode: number) {
+		super(message);
+		this.statusCode = statusCode;
+		this.name = "SecurityError";
 	}
 }

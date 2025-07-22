@@ -5,7 +5,7 @@ import database from "./db/connection";
 database
 	.authenticate()
 	.then(() => {
-		console.log("Database connected successfully");
+		console.log(`Database connected successfully to: ${database.getDatabaseName()}`);
 	})
 	.catch(error => {
 		console.error("Database connection failed:", error);
@@ -20,3 +20,6 @@ server.on("listening", () => {
 server.on("error", error => {
 	console.error("Error starting server:", error);
 });
+
+server.keepAliveTimeout = appEnv.API_KEEP_ALIVE_TIMEOUT;
+server.headersTimeout = appEnv.API_HEADERS_TIMEOUT;

@@ -2,7 +2,7 @@ import { Router } from 'express';
 
 const mainRoutes = Router();
 
-mainRoutes.get('/', (req, res) => {
+mainRoutes.get('/', async (req, res) => {
   res.send('Welcome to the main route!');
 });
 
