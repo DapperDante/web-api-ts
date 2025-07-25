@@ -6,7 +6,7 @@ import mainRoutes from "./routes/main.route";
 import userRoutes from "./routes/user.route";
 import productRoutes from "./routes/product.route";
 import healthRoutes from "./routes/health.route";
-import { errorHandler } from "./middlewares/error.middleware";
+import errorHandler from "./middlewares/error.middleware";
 import {
 	corsMiddleware,
 	timeoutsMiddleware,
@@ -31,7 +31,6 @@ app.use("/health", healthRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/product", productRoutes);
 
-// Error handling middleware
 app.use(errorHandler);
 
 export default app;

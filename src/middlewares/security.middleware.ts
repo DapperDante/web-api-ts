@@ -1,16 +1,17 @@
 import cors from "cors";
-import express from 'express';
+import express from "express";
 import { appEnv } from "../config/env.config";
 import { RouteHandler } from "../interfaces/route.interface";
 import { ErrorFactory } from "../classes/error.class";
-import rateLimit from "express-rate-limit";
+import { RateLimiterRedis } from "rate-limiter-flexible";
+import redis from "../connections/redis.connection";
 
 const corsMiddleware = cors({
 	origin: function (origin, callback) {
-		if(!appEnv.PRODUCTION || !origin || appEnv.CORS_ORIGINS.indexOf(origin!) !== -1) {
+		if (!appEnv.PRODUCTION || !origin || appEnv.CORS_ORIGINS.indexOf(origin!) !== -1) {
 			callback(null, true);
 		} else {
-			callback(ErrorFactory.createError('SecurityError', 'Origin not allowed by CORS', 403));
+			callback(ErrorFactory.createError("SecurityError", "Origin not allowed by CORS", 403));
 		}
 	},
 	optionsSuccessStatus: 200,
@@ -18,25 +19,50 @@ const corsMiddleware = cors({
 	allowedHeaders: ["Content-Type", "Authorization"],
 });
 
-const rateLimiterMiddleware = rateLimit({
-	windowMs: 15 * 60 * 1000, // 15 minutes
-	max: appEnv.API_RATE_LIMIT, // limit each IP to API_RATE_LIMIT requests per windowMs
-	handler: (req, res, next) => {
-		next(ErrorFactory.createError('SecurityError', 'Too many requests, please try again later', 429))
-	}
+const rateLimiter = new RateLimiterRedis({
+	storeClient: redis,
+	keyPrefix: "middleware",
+	points: appEnv.API_RATE_LIMIT,
+	duration: 15 * 60,
+	useRedisPackage: true,
 });
 
+const rateLimiterMiddleware: RouteHandler = async (req, res, next) => {
+	rateLimiter
+		.consume(req.ip!)
+		.then(() => {
+			next();
+		})
+		.catch(() => {
+			next(
+				ErrorFactory.createError("SecurityError", "Too many requests, please try again later", 429)
+			);
+		});
+};
+
 const timeoutsMiddleware: RouteHandler = (req, res, next) => {
-	req.setTimeout(appEnv.API_TIMEOUT_REQUEST, ()=> {
-		next(ErrorFactory.createError('SecurityError', 'Request timeout: The request took longer time to process', 408));
+	req.setTimeout(appEnv.API_TIMEOUT_REQUEST, () => {
+		next(
+			ErrorFactory.createError(
+				"SecurityError",
+				"Request timeout: The request took longer time to process",
+				408
+			)
+		);
 	});
 	res.setTimeout(appEnv.API_TIMEOUT_RESPONSE, () => {
-		next(ErrorFactory.createError('SecurityError', 'Response timeout: The response took longer time to send', 408));
+		next(
+			ErrorFactory.createError(
+				"SecurityError",
+				"Response timeout: The response took longer time to send",
+				408
+			)
+		);
 	});
 	next();
 };
 
 const limitPayloadSizeMiddleware = express.json({
-	limit: appEnv.API_PAYLOAD_LIMIT
-})
+	limit: appEnv.API_PAYLOAD_LIMIT,
+});
 export { corsMiddleware, rateLimiterMiddleware, timeoutsMiddleware, limitPayloadSizeMiddleware };

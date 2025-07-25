@@ -4,7 +4,12 @@ It's a boilerplate about web api to facilitate create with express and sequelize
 
 ## Getting Started
 
-install all dependencies, after execute on your terminal `npm start` (If this your first time or change code on typescript, execute `npm run build` to transpile typescript to javascript) or if you're developing, execute `npm run start:dev`.
+The following instructions will help you set up and run the project.
+
+1.- install all dependencies by running `npm install`
+2.- create a `.env` [like this](#environment-variables)
+3.- start redis server, execute `docker compose up -d` to run redis
+4.- start the application by running `npm run start:dev` for development or `npm start` for production
 
 ## Roles
 
@@ -72,6 +77,8 @@ This project uses several key dependencies to provide essential functionality:
 - **bcrypt**: Library to help you hash passwords securely.
 - **jest**: Delightful JavaScript testing framework for writing and running tests.
 - **jsonwebtoken**: Library to generate and verify JSON Web Tokens for authentication and authorization.
+- **winston**: Versatile logging library for Node.js, used for logging application events and errors.
+
 
 ## Middlewares
 
@@ -160,5 +167,9 @@ DB_HOST=localhost
 DB_USER=username
 DB_PASSWORD=password
 DB_NAME=databasename
-DB_DIALECT=mysql
+DB_DIALECT=mysql #if you work with another database, install its dependency
+
+# Redis variables
+REDIS_HOST=localhost
+REDIS_PORT=6379
 ```

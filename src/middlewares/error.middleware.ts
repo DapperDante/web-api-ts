@@ -1,9 +1,9 @@
 import { UniqueConstraintError, ValidationError } from "sequelize";
 import { PermissionDeniedError, InvalidationFieldsError, NotFoundError, SecurityError } from "../classes/error.class";
 import { RouteError } from "../interfaces/route.interface";
+import { appEnv } from "../config/env.config";
 
 const handlePermissionDeniedError: RouteError = (err, req, res, next) => {
-	console.log(err);
 	if (err instanceof PermissionDeniedError) {
 		return res.status(403).json({
 			message: err.message || "Bad request: Permission denied",
@@ -65,7 +65,7 @@ const handleGenericError: RouteError = (err, req, res, next) => {
 	});
 };
 
-export const errorHandler = [
+const errorHandler = [
 	handlePermissionDeniedError,
 	handleSecurityError,
 	handleInvalidationFieldsError,
@@ -74,3 +74,5 @@ export const errorHandler = [
 	handleNotFoundError,
 	handleGenericError,
 ];
+
+export default errorHandler;
