@@ -7,8 +7,6 @@ export class ErrorFactory {
 				return new PermissionDeniedError(message);
 			case "NotFoundError":
 				return new NotFoundError(message);
-			case "ViolationSystemError":
-				return new ViolationSystemError(message);
 			case "SecurityError":
 				return new SecurityError(message, statusCode!);
 			default:
@@ -33,12 +31,6 @@ export class NotFoundError extends Error {
 	constructor(message: any) {
 		super(message);
 		this.name = "NotFoundError";
-	}
-}
-export class ViolationSystemError extends Error {
-	constructor(message: any) {
-		super(message);
-		this.name = "ViolationSystemError";
 	}
 }
 export class SecurityError extends Error {

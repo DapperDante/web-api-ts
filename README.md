@@ -78,6 +78,8 @@ This project uses several key dependencies to provide essential functionality:
 - **jest**: Delightful JavaScript testing framework for writing and running tests.
 - **jsonwebtoken**: Library to generate and verify JSON Web Tokens for authentication and authorization.
 - **winston**: Versatile logging library for Node.js, used for logging application events and errors.
+- **cors**: Middleware to enable Cross-Origin Resource Sharing, allowing your API to be accessed from different domains.
+- **zod**: TypeScript-first schema declaration and validation library.
 
 
 ## Middlewares
@@ -91,6 +93,9 @@ This project uses several custom and third-party middlewares to handle authentic
 
 - **auth**  
    Handles authentication by verifying JSON Web Tokens (JWT) in incoming requests. It ensures that only authenticated users can access protected routes.
+
+- **blacklist**
+   Checks if the JWT is in the blacklist, which is useful for logging out users or revoking tokens. If a token is found in the blacklist, the request is denied.
 
 ### Global
 

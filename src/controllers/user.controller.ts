@@ -1,4 +1,5 @@
 import { ErrorFactory } from "../classes/error.class";
+import redis from "../connections/redis.connection";
 import { RouteHandler } from "../interfaces/route.interface";
 import { UserRepository } from "../repositories/user.repository";
 import { hashPassword, verifyPassword } from "../security/encryptation.security";
@@ -38,3 +39,22 @@ export const login: RouteHandler = async (req, res, next) => {
 		next(error);
 	}
 };
+export const logout: RouteHandler = async (req, res, next) => {
+	try{
+		const { token } = req;
+		const { exp } = req.user;
+		const ttl = exp - Math.floor(Date.now() / 1000);
+		await redis.set(`blacklist:${token}`, "true", {
+			expiration: {
+				type: "EX",
+				value: ttl,
+			},
+		});
+		const payload = {
+			message: "Logged out successfully",
+		};
+		res.status(204).send(payload);
+	}catch(error){
+		next(error);
+	}
+}
