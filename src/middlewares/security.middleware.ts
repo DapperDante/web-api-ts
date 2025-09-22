@@ -3,8 +3,7 @@ import express from "express";
 import { appEnv } from "../config/env.config";
 import { RouteHandler } from "../interfaces/route.interface";
 import { ErrorFactory } from "../classes/error.class";
-import { RateLimiterRedis } from "rate-limiter-flexible";
-import redis from "../connections/redis.connection";
+import { redisComponent } from "../server";
 
 const corsMiddleware = cors({
 	origin: function (origin, callback) {
@@ -19,16 +18,8 @@ const corsMiddleware = cors({
 	allowedHeaders: ["Content-Type", "Authorization"],
 });
 
-const rateLimiter = new RateLimiterRedis({
-	storeClient: redis,
-	keyPrefix: "middleware",
-	points: appEnv.API_RATE_LIMIT,
-	duration: 15 * 60,
-	useRedisPackage: true,
-});
-
 const rateLimiterMiddleware: RouteHandler = async (req, res, next) => {
-	rateLimiter
+	redisComponent.rateLimiter
 		.consume(req.ip!)
 		.then(() => {
 			next();
