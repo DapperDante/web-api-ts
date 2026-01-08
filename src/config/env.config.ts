@@ -23,11 +23,11 @@ const dbEnv = {
 	DB_PASSWORD: process.env.DB_PASSWORD,
 	DB_NAME: process.env.DB_NAME!,
 	DB_DIALECT: process.env.DB_DIALECT as 'mysql' | 'postgres' | 'sqlite' | 'mariadb' | 'mssql',
+	DB_LOGGING: !!(Number(process.env.DB_LOGGING) || 0),
 };
 
 const redisEnv = {
-	REDIS_HOST: process.env.REDIS_HOST,
-	REDIS_PORT: Number(process.env.REDIS_PORT)
+	REDIS_URL: process.env.REDIS_URL!,
 }
 
 export { appEnv, dbEnv, redisEnv };

@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { appEnv } from '../config/env.config';
 import { AdminToken, GuestToken, TokenFactory, UserToken } from '../classes/token.class';
+import { ErrorFactory } from '../classes/error.class';
 
 export const createTokenFactory = (role: string, extra?: any) => {
   let factory: TokenFactory;
@@ -20,5 +21,9 @@ export const createTokenFactory = (role: string, extra?: any) => {
   return factory.createToken(extra);
 }
 export const decodeToken = (token: string): any => {
-  return jwt.verify(token, appEnv.JWT_SECRET);
+  try{
+    return jwt.verify(token, appEnv.JWT_SECRET);
+  }catch(error){
+    throw ErrorFactory.createError('PermissionDeniedError', "Invalid token");
+  }
 }

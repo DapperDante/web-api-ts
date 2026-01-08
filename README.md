@@ -1,4 +1,4 @@
-# web-api-ts
+# API-REST-TS
 
 It's a boilerplate about web api to facilitate create with express and sequelize in node, but in **Typescript**
 
@@ -10,6 +10,12 @@ The following instructions will help you set up and run the project.
 2.- create a `.env` [like this](#environment-variables)
 3.- start redis server, execute `docker compose up -d` to run redis
 4.- start the application by running `npm run start:dev` for development or `npm start` for production
+
+## Modularity
+
+The proyect is divided into modules, in this case, database, redis and server that index component, thanks to we can manage dependencies and components better, moreover we can replace components without affect the main proyect.
+
+![Modules Diagram](assets/modules.drawio.png)
 
 ## Roles
 
@@ -26,9 +32,12 @@ Each role is represented by a class, making it easy to customize or add new role
 
 ## Endpoints
 
-These endpoints are provided as examples. If you want to add more, simply create new route and controller files following the existing project structure.
+These endpoints are provided as examples. If you want to add more, simply create new route and controller files following the existing project structure:
 
-> **Note:** All endpoints start with `/api/`, except for the `/health` endpoint. The `/health` endpoint is special and is used to check the status of the backend server.
+![Endpoints Diagram](assets/flow-endpoint.drawio.png)
+
+
+> **Note:** All endpoints start with `/api` and `/v1` that helps versioning, except for the `/health` endpoint. The `/health` endpoint is special and is used to check the status of the backend server.
 
 | Method | Path         | Payload                                 | Response  | Access     |
 | ------ | ------------ | --------------------------------------- | --------- | ---------- |
@@ -175,6 +184,5 @@ DB_NAME=databasename
 DB_DIALECT=mysql #if you work with another database, install its dependency
 
 # Redis variables
-REDIS_HOST=localhost
-REDIS_PORT=6379
+REDIS_URL=redis://localhost:6379
 ```

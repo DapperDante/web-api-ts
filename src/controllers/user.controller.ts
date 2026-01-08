@@ -1,9 +1,9 @@
 import { ErrorFactory } from "../classes/error.class";
-import redis from "../connections/redis.connection";
 import { RouteHandler } from "../interfaces/route.interface";
 import { UserRepository } from "../repositories/user.repository";
 import { hashPassword, verifyPassword } from "../security/encryptation.security";
 import { createTokenFactory } from "../security/token.security";
+import { redisComponent } from "../components/redis.component";
 
 const User = new UserRepository();
 
@@ -44,7 +44,7 @@ export const logout: RouteHandler = async (req, res, next) => {
 		const { token } = req;
 		const { exp } = req.user;
 		const ttl = exp - Math.floor(Date.now() / 1000);
-		await redis.set(`blacklist:${token}`, "true", {
+		await redisComponent.component.set(`blacklist:${token}`, "true", {
 			expiration: {
 				type: "EX",
 				value: ttl,

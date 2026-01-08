@@ -1,7 +1,7 @@
 import { UniqueConstraintError, ValidationError } from "sequelize";
 import { PermissionDeniedError, InvalidationFieldsError, NotFoundError, SecurityError } from "../classes/error.class";
 import { RouteError } from "../interfaces/route.interface";
-import { appEnv } from "../config/env.config";
+import { loggerSystem } from "../config/logger.config";
 
 const handlePermissionDeniedError: RouteError = (err, req, res, next) => {
 	if (err instanceof PermissionDeniedError) {
@@ -60,6 +60,7 @@ const handleNotFoundError: RouteError = (err, req, res, next) => {
 	next(err);
 };
 const handleGenericError: RouteError = (err, req, res, next) => {
+	loggerSystem.error(`Unhandled error: ${err.message}`);
 	res.status(500).json({
 		message: "Internal Server Error",
 	});

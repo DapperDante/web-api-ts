@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
-import database from "../connections/db.connection";
+import { dbComponent } from "../components/database.component";
 
-export const Product = database.define(
+export const Product = dbComponent.component.define(
 	"Product",
 	{
 		id: {

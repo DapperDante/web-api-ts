@@ -31,7 +31,7 @@ export const updateProduct: RouteHandler = async (req, res, next) => {
 		const id = Number(req.params.id);
 		const { name, description, stock, price } = req.body;
 		const product = await Product.find(id);
-		if (!product) throw ErrorFactory.createError("NotFoundError", "Product not found");
+		if (!product) throw ErrorFactory.createError("NotFoundError", "jProduct not found");
 		await Product.update(product, { name, description, stock, price });
 		res.status(200).json({
 			message: "Product updated successfully",

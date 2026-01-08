@@ -14,7 +14,7 @@ export class ProductRepository implements CRUD{
   delete(product: any) {
     return product.destroy();
   }
-	findAllByUserId(userId: number) {
-		return Product.findAll({ where: { user_id: userId } });
+	findAllByUserId(user_id: number) {
+		return Product.findAll({ where: { user_id } });
 	}
 }

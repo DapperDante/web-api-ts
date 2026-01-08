@@ -3,7 +3,7 @@ import express from "express";
 import { appEnv } from "../config/env.config";
 import { RouteHandler } from "../interfaces/route.interface";
 import { ErrorFactory } from "../classes/error.class";
-import { redisComponent } from "../server";
+import { redisComponent } from "../components/redis.component";
 
 const corsMiddleware = cors({
 	origin: function (origin, callback) {
