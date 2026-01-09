@@ -1,4 +1,4 @@
-import { Sequelize } from "sequelize";
+import { Dialect, Sequelize } from "sequelize";
 import { dbEnv } from "../config/env.config";
 import { Component } from "../interfaces/component.interface";
 import { loggerSystem } from "../config/logger.config";
@@ -12,7 +12,7 @@ class DatabaseComponent implements Component {
 			dbEnv.DB_PASSWORD, {
 			host: dbEnv.DB_HOST,
 			port: dbEnv.DB_PORT,
-			dialect: dbEnv.DB_DIALECT,
+			dialect: dbEnv.DB_DIALECT as Dialect,
 			logging: dbEnv.DB_LOGGING,
 		});
 	}

@@ -2,9 +2,9 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const appEnv = {
-	PORT: process.env.PORT,
-	NODE_ENV: process.env.NODE_ENV,
-	PRODUCTION: process.env.NODE_ENV === "production",
+	PORT: process.env.PORT || 3000,
+	NODE_ENV: process.env.NODE_ENV || 'testing',
+	PRODUCTION: process.env.NODE_ENV === "production" || false,
 	CORS_ORIGINS: process.env.CORS_ORIGINS ? process.env.CORS_ORIGINS.split(',') : '*',
 	JWT_SECRET: process.env.JWT_SECRET!,
 	BCRYPT_SALT_ROUNDS: Number(process.env.BCRYPT_SALT_ROUNDS),
@@ -17,12 +17,12 @@ const appEnv = {
 };
 
 const dbEnv = {
-	DB_HOST: process.env.DB_HOST,
-	DB_PORT: Number(process.env.DB_PORT)!,
-	DB_USER: process.env.DB_USER!,
-	DB_PASSWORD: process.env.DB_PASSWORD,
-	DB_NAME: process.env.DB_NAME!,
-	DB_DIALECT: process.env.DB_DIALECT as 'mysql' | 'postgres' | 'sqlite' | 'mariadb' | 'mssql',
+	DB_HOST: process.env.DB_HOST || '127.0.0.1',
+	DB_PORT: Number(process.env.DB_PORT)! || 3306,
+	DB_USER: process.env.DB_USER! || 'root',
+	DB_PASSWORD: process.env.DB_PASSWORD || 'passwordRoot',
+	DB_NAME: process.env.DB_NAME! || 'testing',
+	DB_DIALECT: process.env.DB_DIALECT || 'mysql',
 	DB_LOGGING: !!(Number(process.env.DB_LOGGING) || 0),
 };
 
