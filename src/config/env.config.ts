@@ -6,7 +6,7 @@ const appEnv = {
 	NODE_ENV: process.env.NODE_ENV || 'testing',
 	PRODUCTION: process.env.NODE_ENV === "production" || false,
 	CORS_ORIGINS: process.env.CORS_ORIGINS ? process.env.CORS_ORIGINS.split(',') : '*',
-	JWT_SECRET: process.env.JWT_SECRET!,
+	JWT_SECRET: process.env.JWT_SECRET || 'secret_key',
 	BCRYPT_SALT_ROUNDS: Number(process.env.BCRYPT_SALT_ROUNDS),
 	API_RATE_LIMIT: process.env.API_RATE_LIMIT ? Number(process.env.API_RATE_LIMIT) : 100,
 	API_PAYLOAD_LIMIT: process.env.API_PAYLOAD_LIMIT ? process.env.API_PAYLOAD_LIMIT : '1mb',
